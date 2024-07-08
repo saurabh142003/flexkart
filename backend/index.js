@@ -6,6 +6,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import listingRouter from './routes/listing.route.js'
 import gmailRouter from './routes/gmail.route.js'
+import path from 'path'
 import dotenv from 'dotenv'
 dotenv.config();
 
@@ -19,10 +20,21 @@ app.use(cors())
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log("connected to database")
 })
+
+const __dirname = path.resolve();
+
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 app.use('/api/listing',listingRouter)
 app.use('/api/mail',gmailRouter) // ****** IGNORE THIS ROUTE **************** ////////////////////////////
+
+
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+})
+
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal serveer issue";
