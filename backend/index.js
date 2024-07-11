@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import listingRouter from './routes/listing.route.js';
 import gmailRouter from './routes/gmail.route.js';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -21,20 +20,21 @@ mongoose.connect(process.env.MONGO).then(() => {
 });
 
 // This is needed to resolve __dirname in ES6 modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve();
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/listing', listingRouter);
 app.use('/api/mail', gmailRouter); // ****** IGNORE THIS ROUTE **************** ////////////////////////////
 
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend','dist', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
