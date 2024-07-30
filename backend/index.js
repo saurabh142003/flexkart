@@ -54,8 +54,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
             payment_method_types: ["card"],
             line_items: lineItems,
             mode: "payment",
-            success_url: `${process.env.CLIENT_URL}/success`,
-            cancel_url: `${process.env.CLIENT_URL}/cancel`,
+            success_url: `https://fooddelivery-j5lp.onrender.com/success`,
+            cancel_url: `https://fooddelivery-j5lp.onrender.com/cancel`,
         });
 
         res.json({ id: session.id });
