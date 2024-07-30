@@ -4,10 +4,14 @@ import authRouter from './routes/auth.route.js';
 import userRouter from './routes/user.route.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import listingRouter from './routes/listing.route.js';
+import restaurantRouter from "./routes/restaurant.route.js"
 import gmailRouter from './routes/gmail.route.js';
 import path from 'path';
 import dotenv from 'dotenv';
+import foodRouter from './routes/food.route.js';
+import cartRouter from './routes/cart.route.js';
+import Stripe from "stripe";
+
 dotenv.config();
 
 const app = express();
@@ -19,24 +23,48 @@ mongoose.connect(process.env.MONGO).then(() => {
     console.log("Connected to database");
 });
 
-// This is needed to resolve __dirname in ES6 modules
-const __dirname = path.resolve();
-
-// Serve static files from the React app
-
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2022-11-15',
+});
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
-app.use('/api/listing', listingRouter);
-app.use('/api/mail', gmailRouter); // ****** IGNORE THIS ROUTE **************** ////////////////////////////
+app.use('/api/restaurant', restaurantRouter);
+app.use('/api/food', foodRouter);
+app.use('/api/cart', cartRouter);
 
-app.use(express.static(path.join(__dirname, '/frontend/dist')));
+app.post("/api/create-checkout-session", async (req, res) => {
+    try {
+        const { products } = req.body;
 
-// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend','dist', 'index.html'));
+        const lineItems = products.items.map((item) => ({
+            price_data: {
+                currency: "usd",
+                product_data: {
+                    name: item.foodId.name,
+                    images: item.foodId.imageUrls,
+                },
+                unit_amount: (item.foodId.regularPrice - item.foodId.discountPrice === item.foodId.regularPrice ? item.foodId.regularPrice : item.foodId.discountPrice) * 100, // Stripe expects the amount in cents
+            },
+            quantity: item.quantity,
+        }));
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: lineItems,
+            mode: "payment",
+            success_url: `${process.env.CLIENT_URL}/success`,
+            cancel_url: `${process.env.CLIENT_URL}/cancel`,
+        });
+
+        res.json({ id: session.id });
+    } catch (error) {
+        console.error("Stripe checkout session creation error:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal server issue";
@@ -50,3 +78,4 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT, () => {
     console.log("App is listening at port " + process.env.PORT);
 });
+

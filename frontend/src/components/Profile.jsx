@@ -22,9 +22,9 @@ function Profile() {
   const [userUpdateSuccess, setUserUpdateSuccess] = useState(false)
   const [formData, setFormData] = useState({})
   const [updateSuccessText, setUpdateSuccessText] = useState("")
-  const [userListings,setUserListings] = useState([])
-  const [showListingsError, setShowListingsError] = useState(false);
-  const [handleShowListingsButton,setHandleShowListingButton] = useState(true)
+  const [userRestaurants,setUserRestaurants] = useState([])
+  const [showRestaurantsError, setShowRestaurantsError] = useState(false);
+  
   const navigate = useNavigate()
   console.log(formData)
   console.log(filePer)
@@ -134,24 +134,23 @@ async function handleSignOut(){
     dispatch(failure(err.message))
   }
 }
-async function handleShowListings(){
+async function handleShowRestaurants(){
     try{
-      setHandleShowListingButton((prev)=>!prev)
-      const res = await fetch(`/api/user/listings/${currentUser._id}`)
+      const res = await fetch(`/api/user/restaurants/${currentUser._id}`)
       const data = await res.json()
       if (data.success === false) {
         setShowListingsError(true);
         return;
       }
-      setUserListings(data)
+      setUserRestaurants(data)
     }catch(err){
 
-      setShowListingsError(true)
+      setShowRestaurantsError(true)
     }
 }
-const handleListingDelete = async (listingId) => {
+const handleRestaurantDelete = async (resId) => {
   try {
-    const res = await fetch(`/api/listing/delete/${listingId}`, {
+    const res = await fetch(`/api/restaurant/delete/${resId}`, {
       method: 'DELETE',
     });
     const data = await res.json();
@@ -160,8 +159,8 @@ const handleListingDelete = async (listingId) => {
       return;
     }
 
-    setUserListings((prev) =>
-      prev.filter((listing) => listing._id !== listingId)
+    setUserRestaurants((prev) =>
+      prev.filter((res) => res._id !== resId)
     );
   } catch (error) {
     console.log(error.message);
@@ -224,8 +223,8 @@ const handleListingDelete = async (listingId) => {
         >
           {loading ? "Loading..." : "Update"}
         </button>
-        <NavLink className="uppercase rounded-lg w-full text-center p-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition duration-300" to="/create-listing">
-          Create Listing
+        <NavLink className="uppercase rounded-lg w-full text-center p-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition duration-300" to="/register-res">
+          Register Restaurant
         </NavLink>
       </form>
       
@@ -233,47 +232,57 @@ const handleListingDelete = async (listingId) => {
         <button onClick={handleDeleteUser} className='text-red-600 hover:text-red-800 transition duration-300'>Delete Account</button>
         <button onClick={handleSignOut} className='text-blue-600 hover:text-blue-800 transition duration-300'>Sign Out</button>
       </div>
-      <button onClick={handleShowListings} className='text-green-700 w-full border-none'>
-        Show Listings
+      <button onClick={handleShowRestaurants} className='text-green-700 w-full border-none'>
+        Show Restaurants
       </button>
       <p className='text-red-700 mt-5'>
-        {showListingsError ? 'Error showing listings' : ''}
+        {showRestaurantsError ? 'Error showing listings' : ''}
       </p>
       <p className="text-green-600 font-semibold text-center">{updateSuccessText}</p>
-      {userListings && userListings.length > 0 && (
+      {userRestaurants && userRestaurants.length > 0 && (
         <div className={`flex flex-col gap-4`}>
           <h1 className='text-center mt-7 text-2xl font-semibold'>
-            Your Listings
+            Your Restaurants
           </h1>
-          {userListings.map((listing) => (
+          {userRestaurants.map((res) => (
             <div
-              key={listing._id}
+              key={res._id}
               className={`border rounded-lg p-3 flex justify-between items-center gap-4 disp`}
             >
-              <NavLink to={`/listing/${listing._id}`}>
+              <NavLink to={`/restaurant/${res._id}`}>
                 <img
-                  src={listing.imageUrls[0]}
-                  alt='listing cover'
+                  src={res.imageUrls[0]}
+                  alt='restaurant cover'
                   className='h-16 w-16 object-contain'
                 />
               </NavLink>
               <NavLink
                 className='text-slate-700 font-semibold  hover:underline truncate flex-1'
-                to={`/listing/${listing._id}`}
+                to={`/restaurant/${res._id}`}
               >
-                <p>{listing.name}</p>
+                <p>{res.name}</p>
               </NavLink>
 
               <div className='flex flex-col item-center'>
-                <button
-                  onClick={() => handleListingDelete(listing._id)}
-                  className='text-red-700 uppercase'
-                >
-                  Delete
-                </button>
-                <NavLink to={`/update-listing/${listing._id}`}>
-                  <button className='text-green-700 uppercase'>Edit</button>
-                </NavLink>
+                <div className='flex items-center gap-3'>
+                  <button
+                    onClick={() => handleRestaurantDelete(res._id)}
+                    className='text-red-700 uppercase'
+                  >
+                    Delete
+                  </button>
+                  <NavLink to={`/update-restaurant/${res._id}`}>
+                    <button className='text-green-700 uppercase'>Edit</button>
+                  </NavLink>
+                </div>
+                <div className='flex flex-col gap-2 mt-2'>
+                  <NavLink className='text-blue-700 uppercase text-xs' to={`/add-food/${res._id}`}>
+                    Add food
+                  </NavLink>
+                  <NavLink className='text-yellow-500 uppercase text-xs' to={`/edit-menu/${res._id}`}>
+                    Edit & View Menu
+                  </NavLink>
+                </div>
               </div>
             </div>
           ))}

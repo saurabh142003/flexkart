@@ -7,43 +7,25 @@ import 'swiper/css/bundle';
 import ListingItem from '../components/ListingItem';
 
 export default function Home() {
-  const [offerListings, setOfferListings] = useState([]);
-  const [saleListings, setSaleListings] = useState([]);
-  const [rentListings, setRentListings] = useState([]);
+  const [offerFoods, setOfferFoods] = useState([]);
+  const [restaurants,setRestaurants] = useState([]);
   SwiperCore.use([Navigation]);
-  console.log(offerListings);
+  console.log(offerFoods);
   useEffect(() => {
-    const fetchOfferListings = async () => {
+    const fetchOfferFoods = async () => {
       try {
-        const res = await fetch('/api/listing/get?offer=true&limit=4');
+        const res = await fetch('/api/food/get?offer=true&limit=4');
         const data = await res.json();
-        setOfferListings(data);
-        fetchRentListings();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const fetchRentListings = async () => {
-      try {
-        const res = await fetch('/api/listing/get?type=rent&limit=4');
-        const data = await res.json();
-        setRentListings(data);
-        fetchSaleListings();
-      } catch (error) {
-        console.log(error);
-      }
-    };
+        setOfferFoods(data);
+        const restaurantRes = await fetch('/api/restaurant/get?limit=10');
+        const resData = await restaurantRes.json();
+        setRestaurants(resData);
 
-    const fetchSaleListings = async () => {
-      try {
-        const res = await fetch('/api/listing/get?type=sale&limit=4');
-        const data = await res.json();
-        setSaleListings(data);
       } catch (error) {
-        log(error);
+        console.log(error);
       }
     };
-    fetchOfferListings();
+    fetchOfferFoods();
   }, []);
   return (
     <div>
@@ -70,13 +52,13 @@ export default function Home() {
 
       {/* swiper */}
       <Swiper navigation>
-        {offerListings &&
-          offerListings.length > 0 &&
-          offerListings.map((listing) => (
-            <SwiperSlide key={listing._id}>
+        {offerFoods &&
+          offerFoods.length > 0 &&
+          offerFoods.map((food) => (
+            <SwiperSlide key={food._id}>
               <div
                 style={{
-                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
+                  background: `url(${food.imageUrls[0]}) center no-repeat`,
                   backgroundSize: 'cover',
                 }}
                 className='h-[500px]'
@@ -89,33 +71,33 @@ export default function Home() {
       {/* listing results for offer, sale and rent */}
 
       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
-        {offerListings && offerListings.length > 0 && (
+        {offerFoods && offerFoods.length > 0 && (
           <div className=''>
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent offers</h2>
               <Link className='text-sm text-blue-800 hover:underline' to={'/search?offer=true'}>Show more offers</Link>
             </div>
             <div className='flex flex-wrap gap-4'>
-              {offerListings.map((listing) => (
-                <ListingItem listing={listing} key={listing._id} />
+              {offerFoods.map((food) => (
+                <ListingItem food={food} key={food._id} type={"food"} />
               ))}
             </div>
           </div>
         )}
-        {rentListings && rentListings.length > 0 && (
+        {restaurants && restaurants.length > 0 && (
           <div className=''>
             <div className='my-3'>
-              <h2 className='text-2xl font-semibold text-slate-600'>Recent places for rent</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=rent'}>Show more places for rent</Link>
+              <h2 className='text-2xl font-semibold text-slate-600'>Restaurants</h2>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search'}>Show more places for rent</Link>
             </div>
             <div className='flex flex-wrap gap-4'>
-              {rentListings.map((listing) => (
-                <ListingItem listing={listing} key={listing._id} />
+              {restaurants.map((restaurant) => (
+                <ListingItem food={restaurant} key={restaurant._id} type={"restaurant"} />
               ))}
             </div>
           </div>
         )}
-        {saleListings && saleListings.length > 0 && (
+        {/* {saleListings && saleListings.length > 0 && (
           <div className=''>
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>Recent places for sale</h2>
@@ -127,7 +109,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

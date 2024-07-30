@@ -6,11 +6,19 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import PrivateComponent from './components/PrivateComponent'
 import Profile from './components/Profile'
-import CreateListing from './pages/CreateListing'
-import Listing from './pages/Listing'
-import UpdateListing from './pages/UpdateListing'
+import Restaurant from './pages/Restaurant'
+
 import Search from './pages/Search'
 import About from './pages/About'
+import RegisterRes from './pages/RegisterRes'
+import AddFood from './pages/AddFood'
+import UpdateRestaurant from './pages/UpdateRestaurant'
+import Food from './pages/Food'
+import EditMenu from './pages/EditMenu'
+import CartItems from './pages/CartItems'
+import Success from './components/Success'
+import Cancel from './components/Cancel'
+// import CartPage from './pages/CartPage'
 
 
 function App() {
@@ -27,10 +35,17 @@ function App() {
         <Route path='/about' element={<About/>} />
         <Route element={<PrivateComponent/>}>
           <Route path='/profile' element={<Profile/>}/>
-          <Route path='/create-listing' element={<CreateListing/>}/>
-          <Route path='update-listing/:listingId' element={<UpdateListing/>}/>
+          <Route path='/register-res' element={<RegisterRes/>}/>
+          <Route path='/add-food/:restaurantId' element={<AddFood/>}/>
+          <Route path='/edit-menu/:restaurantId' element={<EditMenu/>}/>
+          
+          <Route path='/update-restaurant/:restaurantId' element={<UpdateRestaurant/>}/>
         </Route>
-        <Route path='/listing/:listingId' element={<Listing/>}/>
+        <Route path='/restaurant/:restaurantId' element={<Restaurant/>}/>
+        <Route path='/food/:foodId' element={<Food/>}/>
+        <Route path='/cart' element={<CartItems/>}/>
+        <Route path='/success' element={<Success/>}/>
+        <Route path='/cancel' element={<Cancel/>}/>
       </Routes>
       </div>
   )
