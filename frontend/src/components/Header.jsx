@@ -8,6 +8,7 @@ import { FaCartShopping } from "react-icons/fa6";
 
 
 
+
 function Header() {
 
   const {currentUser} = useSelector((state)=>state.user)
@@ -33,8 +34,8 @@ function Header() {
     <div className="flex flex-col items-center p-4 bg-gray-100 md:flex-row md:justify-between md:p-6">
       <NavLink>
       <div className="flex items-center space-x-2 mb-4 md:mb-0">
-        <span className="text-2xl font-bold text-yellow-500">Food</span>
-        <span className="text-2xl font-bold text-green-700">Delivery</span>
+        <span className="text-2xl font-bold text-yellow-500">Delish</span>
+        <span className="text-2xl font-bold text-green-700">Drive</span>
         <span className="text-3xl font-bold text-blue-700" ><IoFastFoodOutline/></span>
 
       </div>

@@ -3,12 +3,12 @@ import React from 'react'
 export default function About() {
   return (
     <div className='py-20 px-4 max-w-6xl mx-auto'>
-      <h1 className='text-3xl font-bold mb-4 text-slate-800'>About Our Real Estate</h1>
-      <p className='mb-4 text-slate-700'>Real Estate is a leading real estate agency that specializes in helping clients buy, sell, and rent properties in the most desirable neighborhoods. We are dedicated for providing exceptional service and making the buying and selling process as smooth as possible.</p>
+      <h1 className='text-3xl font-bold mb-4 text-slate-800'>About Our Delish Drive</h1>
+      <p className='mb-4 text-slate-700'>At DelishDrive, we revolutionize the way you experience food delivery. Our service is designed for those who crave convenience without compromising on quality.</p>
       <p className='mb-4 text-slate-700'>
-      Our mission is to help our clients achieve their real estate goals by providing expert advice, personalized service, and a deep understanding of the local market. Whether you are looking to buy, sell, or rent a property, we are here to help you every step of the way.
+      Whether you’re in the mood for a gourmet meal, a quick bite, or anything in between, DelishDrive ensures that your favorite dishes are delivered right to your doorstep, hot and fresh. Our user-friendly app and website make ordering effortless, while our extensive menu caters to all tastes and preferences. 
       </p>
-      <p className='mb-4 text-slate-700'>We have a wealth of experience and knowledge in the real estate industry, and we are committed to providing the highest level of service to our clients. We believe that buying or selling a property should be an exciting and rewarding experience, and we are dedicated to making that a reality for each and every one of our clients.</p>
+      <p className='mb-4 text-slate-700'> With DelishDrive, you get more than just food; you get a personalized dining experience that puts you first. Choose DelishDrive for an unmatched combination of speed, variety, and exceptional service. Experience the future of food delivery today with DelishDrive!</p>
     </div>
   )
 }

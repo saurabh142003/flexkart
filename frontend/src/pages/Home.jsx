@@ -5,6 +5,7 @@ import { Navigation } from 'swiper/modules';
 import SwiperCore from 'swiper';
 import 'swiper/css/bundle';
 import ListingItem from '../components/ListingItem';
+import { PiHamburger } from "react-icons/pi";
 
 export default function Home() {
   const [offerFoods, setOfferFoods] = useState([]);
@@ -36,7 +37,7 @@ export default function Home() {
           <br />
           food with ease
         </h1>
-        <div className='text-gray-400 text-xs sm:text-sm'>
+        <div className='text-gray-400 relative text-xs sm:text-sm'>
           Delish Drive is the best food delivery platform to find your next favourite food to
           have.
           <br />
