@@ -22,6 +22,7 @@ app.use(cors());
 mongoose.connect(process.env.MONGO).then(() => {
     console.log("Connected to database");
 });
+const __dirname = path.resolve();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: '2022-11-15',
@@ -63,6 +64,14 @@ app.post("/api/create-checkout-session", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend','dist', 'index.html'));
+  });
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
