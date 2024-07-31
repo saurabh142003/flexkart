@@ -44,12 +44,17 @@ export const addItemToCart = async (req, res, next) => {
   try {
     let cart = await Cart.findOne({ userId });
     if (cart) {
-        
+        console.log("cart existed"+cart)
       const itemIndex = cart.items.findIndex(item => item.foodId.toString() === foodId);
+
       if (itemIndex > -1) {
+        console.log("foundIndex"+itemIndex)
 
         cart.items[itemIndex].quantity += quantity;
+        console.log("Qunatity"+cart.items[itemIndex].quantity)
+
       } else {
+        console.log("not found Index")
 
         cart.items.push({ foodId, quantity });
       }
@@ -124,6 +129,38 @@ export const removeCartItem = async (req, res, next) => {
     }
   } catch (error) {
     next()
+  }
+};
+
+export const removeItemQuantity = async (req, res, next) => {
+  const { userId, foodId } = req.body;
+
+  try {
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return next()
+    }
+
+    const itemIndex = cart.items.findIndex(item => item.foodId.toString() === foodId);
+
+    if (itemIndex === -1) {
+      return next()
+    }
+
+    if (cart.items[itemIndex].quantity > 1) {
+      cart.items[itemIndex].quantity -= 1;
+    } else {
+      cart.items.splice(itemIndex, 1);
+    }
+
+    cart.totalPrice = await calculateTotalPrice(cart.items);
+    await cart.save();
+
+    res.status(200).json(cart);
+  } catch (error) {
+    console.error('Error reducing item quantity:', error);
+    return next(error)
   }
 };
 

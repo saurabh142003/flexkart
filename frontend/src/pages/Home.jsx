@@ -89,7 +89,7 @@ export default function Home() {
           <div className=''>
             <div className='my-3'>
               <h2 className='text-2xl font-semibold text-slate-600'>Restaurants</h2>
-              <Link className='text-sm text-blue-800 hover:underline' to={'/search'}>Show more places for rent</Link>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search'}>Show more restaurants</Link>
             </div>
             <div className='flex flex-wrap gap-4'>
               {restaurants.map((restaurant) => (

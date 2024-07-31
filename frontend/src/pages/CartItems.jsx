@@ -108,6 +108,60 @@ function CartItems() {
         console.error("Error:", error);
     }
 };
+async function addOne(item){
+  try {
+    setLoading(true);
+    const res = await fetch('/api/cart/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: currentUser._id, foodId: item.foodId._id,quantity:1 }),
+    });
+    const data = await res.json();
+
+    if (data.success === false) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+
+    setCart(data)
+    await fetchCart();  // Refetch the cart after removing an item
+    setLoading(false);
+    setError(false);
+  } catch (error) {
+    setError(true);
+    setLoading(false);
+  }
+}
+async function minusOne(item){
+  try {
+    setLoading(true);
+    const res = await fetch('/api/cart/remove/quantity', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: currentUser._id, foodId: item.foodId._id}),
+    });
+    const data = await res.json();
+
+    if (data.success === false) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+
+    setCart(data)
+    await fetchCart();  
+    setLoading(false);
+    setError(false);
+  } catch (error) {
+    setError(true);
+    setLoading(false);
+  }
+}
 
 
 
@@ -141,10 +195,10 @@ function CartItems() {
                       <button onClick={() => removeItem(item)} className="text-red-600 absolute bottom-2 right-2 hover:text-red-800">
                         <MdDelete size={24} />
                       </button>
-                      <button className="text-red-600 absolute top-16 right-20 hover:text-red-800">
+                      <button onClick={()=>addOne(item)} className="text-red-600 absolute top-16 right-20 hover:text-red-800">
                         <IoIosAdd size={34} />
                       </button>
-                      <button className="text-red-600 absolute top-16 left-20 hover:text-red-800">
+                      <button onClick={()=>minusOne(item)} className="text-red-600 absolute top-16 left-20 hover:text-red-800">
                         <RiSubtractLine size={34} />
                       </button>
                     </div>
