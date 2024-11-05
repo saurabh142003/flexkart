@@ -145,7 +145,7 @@ export default function UpdateRestaurant() {
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
-        Update a Listing
+        Update a Product
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
@@ -231,7 +231,7 @@ export default function UpdateRestaurant() {
             disabled={loading || uploading}
             className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
-            {loading ? 'Updating...' : 'Update Restaurant'}
+            {loading ? 'Updating...' : 'Update Product'}
           </button>
           {error && <p className='text-red-700 text-sm'>{error}</p>}
         </div>

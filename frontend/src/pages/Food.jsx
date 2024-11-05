@@ -73,7 +73,7 @@ export default function Food() {
     if (currentUser && currentUser._id) {
       fetchFoodAndCart();
     }
-  }, [params.foodId, currentUser._id,cartUpdated]);
+  }, [params.foodId, currentUser._id, cartUpdated]);
 
   async function addItem() {
     try {
