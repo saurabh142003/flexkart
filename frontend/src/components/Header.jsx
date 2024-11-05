@@ -58,7 +58,7 @@ function Header() {
       <div className="flex space-x-5">
       <NavLink to="/cart" className="text-green-900 hover:text-blue-700"><FaCartShopping size={24} /></NavLink>
         <NavLink to="/" className="text-blue-500 hover:text-blue-700">Home</NavLink>
-        <NavLink to="/about" className="text-blue-500 hover:text-blue-700">About</NavLink>
+        {/* <NavLink to="/about" className="text-blue-500 hover:text-blue-700">About</NavLink> */}
              {currentUser?<NavLink to="/profile"><img className='object-cover rounded-full w-10 h-10 flex justify-center items-center' src={currentUser.avatar} alt="" /></NavLink>: <NavLink to="/signin" className="text-blue-500 hover:text-blue-700">Sign in</NavLink>}
       </div>
     </div>
