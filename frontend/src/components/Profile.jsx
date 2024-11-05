@@ -134,9 +134,9 @@ async function handleSignOut(){
     dispatch(failure(err.message))
   }
 }
-async function handleShowRestaurants(){
+async function handleShowProducts(){
     try{
-      const res = await fetch(`/api/user/restaurants/${currentUser._id}`)
+      const res = await fetch(`/api/user/products/${currentUser._id}`)
       const data = await res.json()
       if (data.success === false) {
         setShowListingsError(true);
@@ -150,7 +150,7 @@ async function handleShowRestaurants(){
 }
 const handleRestaurantDelete = async (resId) => {
   try {
-    const res = await fetch(`/api/restaurant/delete/${resId}`, {
+    const res = await fetch(`/api/product/delete/${resId}`, {
       method: 'DELETE',
     });
     const data = await res.json();
@@ -223,8 +223,8 @@ const handleRestaurantDelete = async (resId) => {
         >
           {loading ? "Loading..." : "Update"}
         </button>
-        <NavLink className="uppercase rounded-lg w-full text-center p-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition duration-300" to="/register-res">
-          Register Restaurant
+        <NavLink className="uppercase rounded-lg w-full text-center p-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition duration-300" to={`/add-food`}>
+          Register Product
         </NavLink>
       </form>
       
@@ -232,8 +232,8 @@ const handleRestaurantDelete = async (resId) => {
         <button onClick={handleDeleteUser} className='text-red-600 hover:text-red-800 transition duration-300'>Delete Account</button>
         <button onClick={handleSignOut} className='text-blue-600 hover:text-blue-800 transition duration-300'>Sign Out</button>
       </div>
-      <button onClick={handleShowRestaurants} className='text-green-700 w-full border-none'>
-        Show Restaurants
+      <button onClick={handleShowProducts} className='text-green-700 w-full border-none'>
+        Show Products
       </button>
       <p className='text-red-700 mt-5'>
         {showRestaurantsError ? 'Error showing listings' : ''}
@@ -242,14 +242,14 @@ const handleRestaurantDelete = async (resId) => {
       {userRestaurants && userRestaurants.length > 0 && (
         <div className={`flex flex-col gap-4`}>
           <h1 className='text-center mt-7 text-2xl font-semibold'>
-            Your Restaurants
+            Your Products
           </h1>
           {userRestaurants.map((res) => (
             <div
               key={res._id}
               className={`border rounded-lg p-3 flex justify-between items-center gap-4 disp`}
             >
-              <NavLink to={`/restaurant/${res._id}`}>
+              <NavLink to={`/product/${res._id}`}>
                 <img
                   src={res.imageUrls[0]}
                   alt='restaurant cover'
@@ -258,7 +258,7 @@ const handleRestaurantDelete = async (resId) => {
               </NavLink>
               <NavLink
                 className='text-slate-700 font-semibold  hover:underline truncate flex-1'
-                to={`/restaurant/${res._id}`}
+                to={`/product/${res._id}`}
               >
                 <p>{res.name}</p>
               </NavLink>
@@ -271,18 +271,11 @@ const handleRestaurantDelete = async (resId) => {
                   >
                     Delete
                   </button>
-                  <NavLink to={`/update-restaurant/${res._id}`}>
+                  <NavLink to={`/update-product/${res._id}`}>
                     <button className='text-green-700 uppercase'>Edit</button>
                   </NavLink>
                 </div>
-                <div className='flex flex-col gap-2 mt-2'>
-                  <NavLink className='text-blue-700 uppercase text-xs' to={`/add-food/${res._id}`}>
-                    Add food
-                  </NavLink>
-                  <NavLink className='text-yellow-500 uppercase text-xs' to={`/edit-menu/${res._id}`}>
-                    Edit & View Menu
-                  </NavLink>
-                </div>
+            
               </div>
             </div>
           ))}

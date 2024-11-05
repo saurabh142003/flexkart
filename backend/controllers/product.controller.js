@@ -1,4 +1,4 @@
-import Food from "../models/food.model.js";
+import Food from "../models/product.model.js";
 
 // Get all food items
 export const getAllFoods = async (req, res,next) => {
@@ -6,10 +6,16 @@ export const getAllFoods = async (req, res,next) => {
         const limit = parseInt(req.query.limit) || 9;
         const startIndex = parseInt(req.query.startIndex) || 0;
         let offer = req.query.offer;
+        console.log(offer)
     
         if (offer === undefined || offer === 'false') {
           offer = { $in: [false, true] };
         }
+        // let category = req.query.category;
+
+        // if (category === undefined || category === 'all') {
+        //   category = { $in: ['electronics', 'toys','clothing'] };
+        // }
     
         // let furnished = req.query.furnished;
     
@@ -23,26 +29,42 @@ export const getAllFoods = async (req, res,next) => {
         //   parking = { $in: [false, true] };
         // }
     
-        // let type = req.query.type;
+        // let category = req.query.category;
+
     
-        // if (type === undefined || type === 'all') {
-        //   type = { $in: ['sale', 'rent'] };
+        // if (category === undefined || category === 'all') {
+        //   type = { $in: ['electronics', 'toys', 'clothing'] };
         // }
+    // console.log("cs",category,offer)
+    //     const searchTerm = req.query.searchTerm || '';
     
-        const searchTerm = req.query.searchTerm || '';
+    //     const sort = req.query.sort || 'createdAt';
     
-        const sort = req.query.sort || 'createdAt';
+    //     const order = req.query.order || 'desc';
+    //     console.log("css",searchTerm,sort,order)
     
-        const order = req.query.order || 'desc';
-    
+    const searchTerm = req.query.searchTerm || '';
+
+    const sort = req.query.sort || 'createdAt';
+
+    const order = req.query.order || 'desc';
+
+
         const foods = await Food.find({
-          name: { $regex: searchTerm, $options: 'i' },offer,
-          
+          name: { $regex: searchTerm, $options: 'i' } ,offer
         })
-          .sort({ [sort]: order })
-          .limit(limit)
-          .skip(startIndex);
-    
+        .sort({ [sort]: order })
+        .limit(limit)
+        .skip(startIndex);
+
+        // const foods = await Food.find({
+        //   name: { $regex: searchTerm, $options: 'i' },offer
+          
+        // })
+        //   .sort({ [sort]: order })
+        //   .limit(limit)
+        //   .skip(startIndex);
+        //   console.log("entered2",foods)
         return res.status(200).json(foods);
       } catch (error) {
         next(error);
@@ -70,11 +92,11 @@ export const addFood = async (req, res ,next) => {
       imageUrls: req.body.imageUrls,
       name: req.body.name,
       description: req.body.description,
-      isVeg: req.body.isVeg,
+      category:req.body.category,
       regularPrice: req.body.regularPrice,
       discountPrice: req.body.discountPrice,
       offer: req.body.offer,
-      resRef: req.body.resRef
+      ownerRef: req.body.ownerRef
     });
 
     const savedFood = await newFood.save();

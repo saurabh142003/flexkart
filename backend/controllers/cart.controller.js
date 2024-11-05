@@ -1,5 +1,5 @@
 import Cart from '../models/cart.model.js';
-import Food from '../models/food.model.js';
+import Food from '../models/product.model.js';
 
 
 const calculateTotalPrice = async (items) => {
@@ -21,7 +21,7 @@ const calculateTotalPrice = async (items) => {
 
 export const getCartByUserId = async (req, res, next) => {
   console.log(req.params.userId)
-
+  console.log("entered getcartbyuserid")
   try {
     const cart = await Cart.findOne({ userId: req.params.userId }).populate('items.foodId');
     if (!cart) {

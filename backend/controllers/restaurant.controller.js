@@ -1,5 +1,5 @@
 import Restaurant from "../models/restaurant.model.js"
-import Food from "../models/food.model.js"
+import Food from "../models/product.model.js"
 export const registerRes = async (req,res,next)=>{
     try{
     const resta = await Restaurant.create(req.body)

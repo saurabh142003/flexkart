@@ -1,6 +1,7 @@
 import User from "../models/user.model.js"
 import bycryptjs from 'bcryptjs'
 import Restaurant from "../models/restaurant.model.js"
+import Product from "../models/product.model.js"
 
 
 export const updateUser = async (req,res,next)=>{
@@ -40,11 +41,11 @@ export const deleteUser = async (req,res,next)=>{
         next(err)
     }
 }
-export const getUserRestaurants = async (req, res, next) => {
+export const getUserProducts = async (req, res, next) => {
 
       try {
-        const restaurants = await Restaurant.find({ userRef: req.params.id });
-        res.status(200).json(restaurants);
+        const products = await Product.find({ ownerRef: req.params.id });
+        res.status(200).json(products);
       } catch (error) {
         next(error);
       }

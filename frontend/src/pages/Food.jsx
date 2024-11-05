@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import { CiDiscount1 } from "react-icons/ci";
-
+import { MdShoppingCart } from "react-icons/md";
+import { BsLightningChargeFill } from "react-icons/bs";
+import { FiTag } from "react-icons/fi";
 export default function Food() {
   SwiperCore.use([Navigation]);
 
@@ -25,9 +27,9 @@ export default function Food() {
       setLoading(true);
 
       // Fetch food details
-      const foodRes = await fetch(`/api/food/get/${params.foodId}`);
+      const foodRes = await fetch(`/api/product/get/${params.foodId}`);
       const foodData = await foodRes.json();
-      
+
       if (!foodData || foodData.success === false) {
         setError(true);
         setLoading(false);
@@ -39,16 +41,17 @@ export default function Food() {
       // Fetch cart details
       const cartRes = await fetch(`/api/cart/${currentUser._id}`);
       const cartData = await cartRes.json();
-      if(cartData.message=="notFound"){
+      if (cartData.message == "notFound") {
         setLoading(false)
-         return;
+        return;
       }
-   
+
       if (!cartData || cartData.success === false) {
         // setError(true);
         setLoading(false);
         return;
       }
+      console.log("hello",cartData)
       console.log("Fetched cart data:", cartData);
 
       // Check if the food item is in the cart
@@ -87,10 +90,11 @@ export default function Food() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+      console.log(response && "true")
       const data = await response.json();
 
       if (data.success === false) {
+        console.log(error+"error")
         setError(data.message);
       } else {
         setAddToCart(false);
@@ -145,8 +149,8 @@ export default function Food() {
         <p className='text-center my-7 text-2xl'>Something went wrong!</p>
       )}
       {food && !loading && !error && (
-        <div>
-          <Swiper navigation>
+        <div className='flex sm:flex-row w-full items-center overflow-x-hidden justify-center flex-col'>
+          {/* <Swiper navigation>
             {food.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
@@ -158,43 +162,91 @@ export default function Food() {
                 ></div>
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Swiper> */}
+          <div className='sm:pl-10 flex mt-4 flex-col gap-3'>
+            <div className='sm:w-[400px] w-[100vw] h-[300px] sm:h-[400px]'>
+              <img className='w-full h-full object-cover' src={food.imageUrls[0]} alt="" />
+            </div>
+            <div className='flex justify-center gap-3 sm:gap-0 sm:justify-between text-xl text-white font-medium'>
+              <div className='flex gap-1 justify-center bg-yellow-500 p-2 sm:p-4 min-w-28 sm:min-w-48' >
+                <MdShoppingCart size={26} />
+                {!item? (<button onClick={addItem}>Add to cart</button>):<button onClick={removeItem}>Remove from cart</button>}
+          
+              </div>
+              <div className='flex justify-center gap-1 bg-orange-500 p-2 sm:p-4 min-w-28 sm:min-w-48'>
+                <BsLightningChargeFill size={26} />
+                <button >Buy now</button>
+              </div>
 
-          <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
+            </div>
+
+          </div>
+          <div className='flex flex-col max-w-4xl mx-auto sm:p-3 p-6 my-2 gap-4'>
             <p className='text-2xl font-semibold'>
-              {food.name} - ${' '}
-              {food.offer
-                ? food.discountPrice.toLocaleString('en-US')
-                : food.regularPrice.toLocaleString('en-US')}
-            </p>
+              {food.name}
 
-            <div className='flex gap-4'>
+            </p>
+            <div className='flex justify-start items-end gap-3'>
+              <p className='text-3xl'>${' '}{food.offer
+              ? food.discountPrice.toLocaleString('en-US')
+              : food.regularPrice.toLocaleString('en-US')}</p>
+              <p className='line-through'>{food.offer? food.regularPrice.toLocaleString('en-US'): ""}</p>
+              {food.discountPrice>0 && <p className='text-[#388e3c]'> {((food.regularPrice-food.discountPrice)/food.regularPrice)*100} % discount</p>}
+
+            </div>
+            <p>Available offers</p>
+            <div className='flex flex-col gap-2'>
+              <div className='flex items-center gap-3'>
+                <FiTag size={24} color='white' fill='green'/>
+                <p>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit Card</p>
+              </div>
+              <div className='flex items-center gap-3'>
+                <FiTag size={24} color='white' fill='green'/>
+                <p>Bank Offer 10% Off on Bank of Baroda Mastercard debit card first time transaction, Terms and Condition apply</p>
+              </div>
+              <div className='flex items-center gap-3'>
+                <FiTag size={24} color='white' fill='green'/>
+                <p>Purchase this Furniture or Appliance and Get Extra ₹500 Off on Select ACs</p>
+              </div>
+              <div className='flex items-center gap-3'>
+                <FiTag size={24} color='white' fill='green'/>
+                <p>Partner OfferExtra 10% off upto ₹500 on next furniture purchase</p>
+              </div>
+            </div>
+            
+
+            {/* <div className='flex gap-4'>
               {food.offer && (
                 <p className='bg-green-900 w-full max-w-[130px] text-white text-center p-1 justify-center items-center flex gap-1 rounded-md'>
                   ${+food.regularPrice - +food.discountPrice} OFF
                 </p>
               )}
+            </div> */}
+             <div className='flex gap-8 pb-6 border-b-black border-b' >
+              <p className='font-extralight'>Delivery</p>
+              <p>Delivery by Sun Nov 10 2024 | ₹40</p>
+            </div>
+          
+            <div className='flex gap-8 pb-6 border-b-black border-b' >
+              <p className='font-extralight'>Waranty</p>
+              <p>No warranty</p>
+            </div>
+           
+            <div className='flex gap-12' >
+              <p className='font-extralight'>Seller</p>
+              <div className='flex flex-col justify-center'>
+                <p className='text-blue-700'>SuperComNet</p>
+                <p>GST invoice available</p>
+                <p>View more sellers starting from ₹329</p>
+              </div>
             </div>
             <p className='text-slate-800'>
               <span className='font-semibold text-black'>Description - </span>
               {food.description}
             </p>
-
-            {!item ? (
-              <button
-                className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'
-                onClick={addItem}
-              >
-                ADD TO CART
-              </button>
-            ) : (
-              <button
-                className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'
-                onClick={removeItem}
-              >
-                REMOVE FROM CART
-              </button>
-            )}
+           
+          
+            
           </div>
         </div>
       )}

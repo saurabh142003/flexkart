@@ -8,7 +8,7 @@ import restaurantRouter from "./routes/restaurant.route.js"
 import gmailRouter from './routes/gmail.route.js';
 import path from 'path';
 import dotenv from 'dotenv';
-import foodRouter from './routes/food.route.js';
+import foodRouter from './routes/product.route.js';
 import cartRouter from './routes/cart.route.js';
 import Stripe from "stripe";
 
@@ -31,7 +31,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/restaurant', restaurantRouter);
-app.use('/api/food', foodRouter);
+app.use('/api/product', foodRouter);
 app.use('/api/cart', cartRouter);
 
 app.post("/api/create-checkout-session", async (req, res) => {
@@ -54,8 +54,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
             payment_method_types: ["card"],
             line_items: lineItems,
             mode: "payment",
-            success_url: `https://fooddelivery-j5lp.onrender.com/success`,
-            cancel_url: `https://fooddelivery-j5lp.onrender.com/cancel`,
+            success_url: `http://localhost:3000/success`,
+            cancel_url: `http://localhost:3000/cancel`,
         });
 
         res.json({ id: session.id });

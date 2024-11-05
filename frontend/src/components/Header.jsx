@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { IoFastFoodOutline } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
-
+import { SiFlipkart } from "react-icons/si";
 
 
 
@@ -34,9 +34,9 @@ function Header() {
     <div className="flex flex-col items-center p-4 bg-gray-100 md:flex-row md:justify-between md:p-6">
       <NavLink>
       <div className="flex items-center space-x-2 mb-4 md:mb-0">
-        <span className="text-2xl font-bold text-yellow-500">Delish</span>
-        <span className="text-2xl font-bold text-green-700">Drive</span>
-        <span className="text-3xl font-bold text-blue-700" ><IoFastFoodOutline/></span>
+        <span className="text-2xl font-bold text-yellow-500">Flex</span>
+        <span className="text-2xl font-bold text-yellow-500">Kart</span>
+        <span className="text-3xl font-bold text-yellow-500" ><SiFlipkart/></span>
 
       </div>
       </NavLink>

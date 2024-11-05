@@ -36,10 +36,10 @@ function App() {
         <Route element={<PrivateComponent/>}>
           <Route path='/profile' element={<Profile/>}/>
           <Route path='/register-res' element={<RegisterRes/>}/>
-          <Route path='/add-food/:restaurantId' element={<AddFood/>}/>
+          <Route path='/add-food' element={<AddFood/>}/>
           <Route path='/edit-menu/:restaurantId' element={<EditMenu/>}/>
           
-          <Route path='/update-restaurant/:restaurantId' element={<UpdateRestaurant/>}/>
+          <Route path='/update-product/:productId' element={<UpdateRestaurant/>}/>
         </Route>
         <Route path='/restaurant/:restaurantId' element={<Restaurant/>}/>
         <Route path='/food/:foodId' element={<Food/>}/>

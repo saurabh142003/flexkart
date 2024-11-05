@@ -19,10 +19,11 @@ export default function AddFood() {
     imageUrls: [],
     name: '',
     description: '',
-    isVeg:true,
+    category:'electronics',
     regularPrice: 50,
     discountPrice: 0,
     offer: false,
+    ownerRef:currentUser._id
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -90,16 +91,15 @@ export default function AddFood() {
   };
 
   const handleChange = (e) => {
-
     if (
-      e.target.type === 'radio'
-      
+      e.target.name === 'category'
     ) {
       setFormData({
         ...formData,
-        isVeg: e.target.value=='veg',
+        category: e.target.value ,
       });
     }
+
     if (
         e.target.id === 'offer'
       ) {
@@ -122,7 +122,7 @@ export default function AddFood() {
   };
 
   const handleSubmit = async (e) => {
-    const resId = params.restaurantId
+    
     e.preventDefault();
     try {
       if (formData.imageUrls.length < 1)
@@ -131,14 +131,13 @@ export default function AddFood() {
         return setError('Discount price must be lower than regular price');
       setLoading(true);
       setError(false);
-      const res = await fetch('/api/food/create', {
+      const res = await fetch('/api/product/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          resRef: resId,
+          ...formData
         }),
       });
       const data = await res.json();
@@ -156,7 +155,7 @@ export default function AddFood() {
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
-        Add Food 
+        Add Product 
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
@@ -182,21 +181,28 @@ export default function AddFood() {
           />
           <div className='flex gap-6 flex-wrap'>
             <div className='flex gap-3'>
-                <label>Type:</label>
+                <label>Category:</label>
                 <input
                 type="radio"
-                name="type"
-                value="veg"
-                checked={formData.isVeg}
+                name="category"
+                value="electronics"
+                checked={formData.category=='electronics'}
                 onChange={handleChange}
-                /> Veg
+                /> Electronics
                 <input
                 type="radio"
-                name="type"
-                value="nonveg"
-                checked={!formData.isVeg}
+                name="category"
+                value="toys"
+                checked={formData.category=='toys'}
                 onChange={handleChange}
-                /> Non-Veg
+                /> Toys
+                <input
+                type="radio"
+                name="category"
+                value="clothing"
+                checked={formData.category=='clothing'}
+                onChange={handleChange}
+                /> Clothing
             </div>
             <div className='flex gap-2'>
               <input
@@ -303,7 +309,7 @@ export default function AddFood() {
             disabled={loading || uploading}
             className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
-            {loading ? 'Adding...' : 'Add Food'}
+            {loading ? 'Adding...' : 'Add Product'}
           </button>
           {error && <p className='text-red-700 text-sm'>{error}</p>}
         </div>

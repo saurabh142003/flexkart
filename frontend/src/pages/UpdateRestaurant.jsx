@@ -18,7 +18,6 @@ export default function UpdateRestaurant() {
     imageUrls: [],
     name: '',
     description: '',
-    address: '',
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -27,8 +26,8 @@ export default function UpdateRestaurant() {
 
   useEffect(() => {
     const fetchRestaurant = async () => {
-      const resId = params.restaurantId;
-      const res = await fetch(`/api/restaurant/get/${resId}`);
+      const resId = params.productId;
+      const res = await fetch(`/api/product/get/${resId}`);
       const data = await res.json();
       if (data.success === false) {
         console.log(data.message);
@@ -122,7 +121,7 @@ export default function UpdateRestaurant() {
 
       setLoading(true);
       setError(false);
-      const res = await fetch(`/api/restaurant/update/${params.restaurantId}`, {
+      const res = await fetch(`/api/product/update/${params.productId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +136,7 @@ export default function UpdateRestaurant() {
       if (data.success === false) {
         setError(data.message);
       }
-      navigate(`/restaurant/${data._id}`);
+      navigate(`/food/${data._id}`);
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -170,7 +169,7 @@ export default function UpdateRestaurant() {
             onChange={handleChange}
             value={formData.description}
           />
-          <input
+          {/* <input
             type='text'
             placeholder='Address'
             className='border p-3 rounded-lg'
@@ -178,7 +177,7 @@ export default function UpdateRestaurant() {
             required
             onChange={handleChange}
             value={formData.address}
-          />
+          /> */}
         </div>
         <div className='flex flex-col flex-1 gap-4'>
           <p className='font-semibold'>
