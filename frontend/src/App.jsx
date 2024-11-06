@@ -38,14 +38,15 @@ function App() {
           <Route path='/register-res' element={<RegisterRes/>}/>
           <Route path='/add-food' element={<AddFood/>}/>
           <Route path='/edit-menu/:restaurantId' element={<EditMenu/>}/>
-          
+          <Route path='/cart' element={<CartItems/>}/>
+          <Route path='/success' element={<Success/>}/>
+          <Route path='/cancel' element={<Cancel/>}/>
           <Route path='/update-product/:productId' element={<UpdateRestaurant/>}/>
         </Route>
-        <Route path='/restaurant/:restaurantId' element={<Restaurant/>}/>
+        {/* <Route path='/restaurant/:restaurantId' element={<Restaurant/>}/> */}
         <Route path='/food/:foodId' element={<Food/>}/>
-        <Route path='/cart' element={<CartItems/>}/>
-        <Route path='/success' element={<Success/>}/>
-        <Route path='/cancel' element={<Cancel/>}/>
+     
+        
       </Routes>
       </div>
   )
